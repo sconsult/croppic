@@ -1,3 +1,6 @@
+Hi guys, srry for the lousy support, Matt will be taking over from here, improving the plugin further and take better care of it than i did.
+Thank you for all the work and posts, some of those made my day :)
+
 see full documentation at http://www.croppic.net/
 
 works in IE 10+, chrome, and ffx (opera coming soon)

@@ -1,7 +1,7 @@
 /*
  * CROP
  * dependancy: jQuery
- * author: Ognjen "Zmaj Džedaj" Božičković
+ * author: Ognjen "Zmaj Džedaj" Božičković and Mat Steinlin
  */
 
 (function (window, document) {
@@ -24,17 +24,24 @@
 			imgEyecandy:true,
 			imgEyecandyOpacity:0.2,
 			zoomFactor:10,
+			rotateFactor:5,
 			doubleZoomControls:true,
 			modal:false,
 			customUploadButtonId:'',
 			loaderHtml:'',
+			scaleToFill: true,
+			loadPicture:'',
+			onReset: null,
+			
 			//callbacks
 			onBeforeImgUpload: null,
 			onAfterImgUpload: null,
 			onImgDrag: null,
 			onImgZoom: null,
+			onImgRotate: null,
 			onBeforeImgCrop: null,
 			onAfterImgCrop: null
+			
 		};
 
 		// OVERWRITE DEFAULT OPTIONS
@@ -53,6 +60,7 @@
 		imgH:0,
 		objW:0,
 		objH:0,
+		actualRotation: 0,
 		windowW:0,
 		windowH:$(window).height(),
 		obj:{},
@@ -68,8 +76,8 @@
 		cropControlZoomMuchIn:{},
 		cropControlZoomMuchOut:{},
 		cropControlZoomIn:{},
-		cropControlZoomOut:{},
-		cropControlCrop:{},
+        cropControlZoomOut:{},
+        cropControlCrop:{},
 		cropControlReset:{},	
 		cropControlRemoveCroppedImage:{},	
 		modal:{},
@@ -81,10 +89,18 @@
 			that.objW = that.obj.width();
 			that.objH = that.obj.height();
 			
+			// reset rotation
+			that.actualRotation = 0;
+			
 			if( $.isEmptyObject(that.defaultImg)){ that.defaultImg = that.obj.find('img'); }
 			
 			that.createImgUploadControls();
-			that.bindImgUploadControl();
+			
+			if( $.isEmptyObject(that.options.loadPicture)){				
+				that.bindImgUploadControl();
+			}else{				
+				that.loadExistingImage();
+			}			
 			
 		},
 		createImgUploadControls: function(){
@@ -95,6 +111,7 @@
 			var cropControlRemoveCroppedImage = '<i class="cropControlRemoveCroppedImage"></i>';
 			
 			if( $.isEmptyObject(that.croppedImg)){ cropControlRemoveCroppedImage=''; }
+			if( !$.isEmptyObject(that.options.loadPicture)){ cropControlUpload='';}
 
 			var html =    '<div class="cropControls cropControlsUpload"> ' + cropControlUpload + cropControlRemoveCroppedImage + ' </div>';
 			that.outputDiv.append(html);
@@ -163,7 +180,7 @@
                     processData: false,
                     type: 'POST'
 				}).always(function(data){
-					response = jQuery.parseJSON(data);
+					response = typeof data =='object' ? data : jQuery.parseJSON(data);
 					if(response.status=='success'){
 						
 						that.imgInitW = that.imgW = response.width;
@@ -174,13 +191,15 @@
 						
 						that.imgUrl=response.url;
 						
-						that.obj.append('<img src="'+response.url+'">');
-						that.initCropper();
-						
-						that.hideLoader();
+						var img = $('<img src="'+response.url+'">')
 
-						if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
-						
+						that.obj.append(img);
+
+						img.load(function(){
+							that.initCropper();
+							that.hideLoader();
+							if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
+						});
 					}
 					
 					if(response.status=='error'){
@@ -195,6 +214,44 @@
 			});
 		
 		},
+		loadExistingImage: function(){
+			var that = this;
+			
+			if( $.isEmptyObject(that.croppedImg)){
+				if (that.options.onBeforeImgUpload) that.options.onBeforeImgUpload.call(that);
+			
+				that.showLoader();
+				if(that.options.modal){	that.createModal(); }
+				if( !$.isEmptyObject(that.croppedImg)){ that.croppedImg.remove(); }
+				
+				that.imgUrl=that.options.loadPicture ;
+				
+				var img =$('<img src="'+ that.options.loadPicture +'">');
+				that.obj.append(img);
+				img.load(function() {
+					that.imgInitW = that.imgW = this.width;
+					that.imgInitH = that.imgH = this.height;
+					that.initCropper();
+					that.hideLoader();
+					if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
+				});	
+						
+			}else{					
+				that.cropControlRemoveCroppedImage.on('click',function(){ 
+					that.croppedImg.remove();
+					$(this).hide();
+					
+					if( !$.isEmptyObject(that.defaultImg)){ 
+						that.obj.append(that.defaultImg);
+					}					
+					if(that.options.outputUrlId !== ''){	$('#'+that.options.outputUrlId).val('');	}
+					that.croppedImg = '';
+					that.reset();
+				});	
+			}
+			
+		},
+		
 		createModal: function(){
 			var that = this;
 		
@@ -258,13 +315,15 @@
 			var cropControlZoomIn =          '<i class="cropControlZoomIn"></i>';
 			var cropControlZoomOut =         '<i class="cropControlZoomOut"></i>';
 			var cropControlZoomMuchOut =     '<i class="cropControlZoomMuchOut"></i>';
-			var cropControlCrop =            '<i class="cropControlCrop"></i>';
+			var cropControlRotateLeft =      '<i class="cropControlRotateLeft"></i>';
+	        var cropControlRotateRight =     '<i class="cropControlRotateRight"></i>';
+	        var cropControlCrop =            '<i class="cropControlCrop"></i>';
 			var cropControlReset =           '<i class="cropControlReset"></i>';
 			
             var html;
             
-			if(that.options.doubleZoomControls){ html =  '<div class="cropControls cropControlsCrop">'+ cropControlZoomMuchIn + cropControlZoomIn + cropControlZoomOut + cropControlZoomMuchOut + cropControlCrop + cropControlReset + '</div>'; }
-			else{ html =  '<div class="cropControls cropControlsCrop">' + cropControlZoomIn + cropControlZoomOut + cropControlCrop + cropControlReset + '</div>'; }	
+			if(that.options.doubleZoomControls){ html =  '<div class="cropControls cropControlsCrop">'+ cropControlZoomMuchIn + cropControlZoomIn + cropControlZoomOut + cropControlZoomMuchOut + cropControlRotateLeft + cropControlRotateRight + cropControlCrop + cropControlReset + '</div>'; }
+			else{ html =  '<div class="cropControls cropControlsCrop">' + cropControlZoomIn + cropControlZoomOut + cropControlRotateLeft + cropControlRotateRight + cropControlCrop + cropControlReset + '</div>'; }	
 			
 			that.obj.append(html);
 			
@@ -285,7 +344,13 @@
 			that.cropControlZoomOut = that.cropControlsCrop.find('.cropControlZoomOut');
 			that.cropControlZoomOut.on('click',function(){ that.zoom(-that.options.zoomFactor); });		
 
-			that.cropControlCrop = that.cropControlsCrop.find('.cropControlCrop');
+			that.cropControlZoomIn = that.cropControlsCrop.find('.cropControlRotateLeft');
+	        that.cropControlZoomIn.on('click', function() { that.rotate(-that.options.rotateFactor); });
+	        
+	        that.cropControlZoomOut = that.cropControlsCrop.find('.cropControlRotateRight');
+	        that.cropControlZoomOut.on('click', function() { that.rotate(that.options.rotateFactor); });
+	        
+	        that.cropControlCrop = that.cropControlsCrop.find('.cropControlCrop');
 			that.cropControlCrop.on('click',function(){ that.crop(); });
 
 			that.cropControlReset = that.cropControlsCrop.find('.cropControlReset');
@@ -318,13 +383,22 @@
 					});
 					
 					if(that.options.imgEyecandy){ that.imgEyecandy.offset({ top:imgTop, left:imgLeft }); }
-					
-					if( parseInt( that.img.css('top')) > 0 ){ that.img.css('top',0);  if(that.options.imgEyecandy){ that.imgEyecandy.css('top', 0); } }
-					var maxTop = -( that.imgH-that.objH); if( parseInt( that.img.css('top')) < maxTop){ that.img.css('top', maxTop); if(that.options.imgEyecandy){ that.imgEyecandy.css('top', maxTop); } }
-					
-					if( parseInt( that.img.css('left')) > 0 ){ that.img.css('left',0); if(that.options.imgEyecandy){ that.imgEyecandy.css('left', 0); }}
-					var maxLeft = -( that.imgW-that.objW); if( parseInt( that.img.css('left')) < maxLeft){ that.img.css('left', maxLeft); if(that.options.imgEyecandy){ that.imgEyecandy.css('left', maxLeft); } }
-					
+										
+					if (that.objH < that.imgH) {
+						if (parseInt(that.img.css('top')) > 0) { that.img.css('top', 0); if (that.options.imgEyecandy) { that.imgEyecandy.css('top', 0);}}
+						var maxTop = -( that.imgH - that.objH); if (parseInt(that.img.css('top')) < maxTop) { that.img.css('top', maxTop); if (that.options.imgEyecandy) { that.imgEyecandy.css('top', maxTop); }}
+					}else{
+						if (parseInt(that.img.css('top')) < 0) { that.img.css('top', 0); if (that.options.imgEyecandy) { that.imgEyecandy.css('top', 0); }}
+						var maxTop =  that.objH - that.imgH; if (parseInt(that.img.css('top')) > maxTop) { that.img.css('top', maxTop);if (that.options.imgEyecandy) {that.imgEyecandy.css('top', maxTop); }}
+					}
+
+					if (that.objW < that.imgW) {
+						if( parseInt( that.img.css('left')) > 0 ){ that.img.css('left',0); if(that.options.imgEyecandy){ that.imgEyecandy.css('left', 0); }}
+						var maxLeft = -( that.imgW-that.objW); if( parseInt( that.img.css('left')) < maxLeft){ that.img.css('left', maxLeft); if(that.options.imgEyecandy){ that.imgEyecandy.css('left', maxLeft); } }
+					}else{
+						if( parseInt( that.img.css('left')) < 0 ){ that.img.css('left',0); if(that.options.imgEyecandy){ that.imgEyecandy.css('left', 0); }}
+						var maxLeft = ( that.objW - that.imgW); if( parseInt( that.img.css('left')) > maxLeft){ that.img.css('left', maxLeft); if(that.options.imgEyecandy){ that.imgEyecandy.css('left', maxLeft); } }
+					}
 					if (that.options.onImgDrag) that.options.onImgDrag.call(that);
 					
 				});
@@ -336,6 +410,24 @@
 			});
 			
 		},
+	    rotate: function(x) {
+	        var that = this;
+	        that.actualRotation += x;
+	        that.img.css({
+	            '-webkit-transform': 'rotate(' + that.actualRotation + 'deg)',
+	            '-moz-transform': 'rotate(' + that.actualRotation + 'deg)',
+	            'transform': 'rotate(' + that.actualRotation + 'deg)',
+	        });
+	        if(that.options.imgEyecandy) {
+	            that.imgEyecandy.css({
+	                '-webkit-transform': 'rotate(' + that.actualRotation + 'deg)',
+	                '-moz-transform': 'rotate(' + that.actualRotation + 'deg)',
+	                'transform': 'rotate(' + that.actualRotation + 'deg)',
+	            });
+	        }
+	        if (typeof that.options.onImgRotate == 'function')
+	            that.options.onImgRotate.call(that);
+	    },
 		zoom :function(x){
 			var that = this;
 			var ratio = that.imgW / that.imgH;
@@ -357,7 +449,7 @@
 				
 			} 
 			
-			if( newWidth > that.imgInitW || newHeight > that.imgInitH){
+			if(!that.options.scaleToFill && (newWidth > that.imgInitW || newHeight > that.imgInitH)){
 				
 				if( newWidth - that.imgInitW < newHeight - that.imgInitH ){ 
 					newWidth = that.imgInitW;
@@ -418,7 +510,8 @@
 					imgY1:Math.abs( parseInt( that.img.css('top') ) ),
 					imgX1:Math.abs( parseInt( that.img.css('left') ) ),
 					cropH:that.objH,
-					cropW:that.objW
+					cropW:that.objW,
+					rotation:that.actualRotation
 				};
 			
 			var formData = new FormData();
@@ -444,10 +537,12 @@
                 processData: false,
                 type: 'POST'
 				}).always(function(data){
-					response = jQuery.parseJSON(data);
+					response = typeof data =='object' ? data : jQuery.parseJSON(data);
+					
 					if(response.status=='success'){
-						
-						that.imgEyecandy.hide();
+					
+					    if (that.options.imgEyecandy)
+						    that.imgEyecandy.hide();
 						
 						that.destroy();
 						
@@ -490,7 +585,8 @@
 				that.obj.append(that.croppedImg); 
 				if(that.options.outputUrlId !== ''){	$('#'+that.options.outputUrlId).val(that.croppedImg.attr('url'));	}
 			}
-			
+			if (typeof that.options.onReset == 'function')
+                that.options.onReset.call(that);
 		},
 		destroy:function(){
 			var that = this;

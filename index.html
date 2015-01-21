@@ -48,7 +48,7 @@
             <li><a class="scrollToLink" data-scroll="examplesTarget" >examples</a></li>
             <li><a class="scrollToLink" data-scroll="documentationTarget" >docs</a></li>
             <li><a class="scrollToLink" data-scroll="downloadTarget">download</a></li>
-            <li><a href="https://github.com/styoe/croppic">github</a></li>
+            <li><a href="https://github.com/sconsult/croppic">github</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -109,6 +109,19 @@
 				<div id="cropContainerEyecandy"></div>
 			</div>
 		</div>
+		<div class="row mt ">
+			<div class="col-lg-4 ">
+				<div id="cropContainerPlaceHolder1"></div>
+			</div>	
+			<div class="col-lg-4 ">
+				<h4 class="centered"> Preload </h4>
+				<p class="centered">( if the picture is already available )</p>
+				<div id="cropContainerPreload"></div>
+			</div>		
+			<div class="col-lg-4 ">
+				<div id="cropContainerPlaceHolder2"></div>
+			</div>
+		</div>		
 	</div>
 	
 	
@@ -126,6 +139,7 @@
 				<a class="scrollToLink" data-scroll="optionTarget-uploadData">uploadData</a>
 				<a class="scrollToLink" data-scroll="optionTarget-cropUrl">cropUrl</a>
 				<a class="scrollToLink" data-scroll="optionTarget-cropData">cropData</a>
+				<a class="scrollToLink" data-scroll="optionTarget-preloadImage">preloadImage</a>
 				<a class="scrollToLink" data-scroll="optionTarget-outputUrlId">outputUrlId</a>
 				<a class="scrollToLink" data-scroll="optionTarget-customUploadButtonId">customUploadButtonId</a>
 				<a class="scrollToLink" data-scroll="optionTarget-modal">modal</a>
@@ -146,7 +160,7 @@
 				<p class="centered">Simplest implementation. Beware that you must provide width and height of the container. </p>
 				<h3 class="centered">JS</h3>
 				<pre>		
-		var cropperHeader = new Crop('yourId');
+		var cropperHeader = new Croppic('yourId');
 				</pre>
 				
 				<h3 class="centered">HTML</h3>
@@ -171,11 +185,14 @@
 			
 			<h3 class="centered">JS</h3>
 				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
-					
+		
 		var cropperOptions = {
 			uploadUrl:'path_to_your_image_proccessing_file.php'
-		}
+		}		
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
 				</pre>
 			
 			
@@ -211,9 +228,8 @@
 			<p class="centered">Additional data you want to send to your image upload proccessing file</p>
 			
 			<h3 class="centered">JS</h3>
-				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
-					
+				<pre>	
+
 		var cropperOptions = {
 			uploadUrl:'path_to_your_image_proccessing_file.php',
 			uploadData:{
@@ -221,6 +237,10 @@
 				"dummyData2":"text"
 			}
 		}
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
 				</pre>
 			
 	<hr id="optionTarget-cropUrl"/>
@@ -229,12 +249,15 @@
 			<p class="centered">Path to your img crop proccessing file.</p>
 			
 			<h3 class="centered">JS</h3>
-				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
-					
+				<pre>	
+		
 		var cropperOptions = {
 			cropUrl:'path_to_your_image_cropping_file.php'
 		}
+				
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
 				</pre>
 			
 			
@@ -283,8 +306,7 @@
 			
 			<h3 class="centered">JS</h3>
 				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
-					
+				
 		var cropperOptions = {
 			customUploadButtonId:'path_to_your_image_proccessing_file.php',
 			cropData:{
@@ -292,6 +314,28 @@
 				"dummyData2":"text"
 			}
 		}
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
+				</pre>
+				
+	<hr id="optionTarget-preloadImage"/>
+			
+			<h2 class="centered">Preload Image</h2>	
+			<p class="centered">Load an Image which is already on the Server</p>
+			
+			<h3 class="centered">JS</h3>
+				<pre>		
+				
+		var cropperOptions = {
+			cropUrl:'path_to_your_image_cropping_file.php',
+			loadPicture:'path-to-your-image'
+		}
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
 				</pre>
 				
 	<hr id="optionTarget-outputUrlId"/>
@@ -306,11 +350,13 @@
 			
 			<h3 class="centered">JS</h3>
 				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
-					
+						
 		var cropperOptions = {
 			outputUrlId:'myOutputId'
-		}
+		}		
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+	
 				</pre>
 			
 	<hr id="optionTarget-customUploadButtonId"/>
@@ -320,11 +366,13 @@
 			
 			<h3 class="centered">JS</h3>
 				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
-					
 		var cropperOptions = {
 			customUploadButtonId:'myDivId'
 		}
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
 				</pre>
 			
 	<hr id="optionTarget-modal"/>
@@ -334,11 +382,14 @@
 			
 			<h3 class="centered">JS</h3>
 				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
-					
+		
 		var cropperOptions = {
 			modal:true
-		}
+		}		
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
 				</pre>
 				
 	<hr id="optionTarget-loaderHtml"/>
@@ -350,12 +401,15 @@
 			</p>
 			
 			<h3 class="centered">JS</h3>
-				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
-					
+				<pre>		7
+				
 		var cropperOptions = {
 			loaderHtml:'&lt;img class="loader" src="loader.png" &gt;'
 		}
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
 				</pre>
 	
 	<hr id="optionTarget-imgEyecandy"/>
@@ -368,7 +422,12 @@
 			
 			<h3 class="centered">JS</h3>
 				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
+		var cropperOptions = {
+			imgEyecandy:true,
+			imgEyecandyOpacity:0.2
+		}
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
 					
 		var cropperOptions = {
 			imgEyecandy:true,
@@ -385,12 +444,15 @@
 			
 			<h3 class="centered">JS</h3>
 				<pre>		
-		var cropperHeader = new Crop('yourId', cropperOptions);
-					
+				
 		var cropperOptions = {
 			zoomFactor:10,
 			doubleZoomControls:true
 		}
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
 				</pre>
 	
 	<hr id="optionTarget-callbacks"/>
@@ -418,7 +480,7 @@
 
 			<h3 class="centered">JS</h3>
 			<pre>		
-		var cropper = new Crop('yourId', cropperOptions);
+		var cropper = new Croppic('yourId', cropperOptions);
 		
 		cropper.destroy() 	// no need explaining here :) 
 		cropper.reset() 	// destroys and then inits the cropper
@@ -451,16 +513,18 @@
 	
 	<div id="copyright">
 		<p>	- NO PIXELS WERE HARMED DURING THE PRODUCTION OF THIS WEBSITE -	</p>
-		<div id="web_by"><img src="assets/img/studio42.png" />	 <img id="jobotic" src="assets/img/jobotic.png"> <label> Visit us!</label> </div>
+		<div id="web_by"><img src="assets/img/steinlinconsulting.png" />	 <img id="jobotic" src="assets/img/jobotic.png"> <label> Visit us!</label> </div>
 	</div>
 	
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="croppic.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+	<script src=" https://code.jquery.com/jquery-2.1.3.min.js"></script>
+   
+	<script src="assets/js/bootstrap.min.js"></script>
+   	<script src="croppic.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
 		var croppicHeaderOptions = {
@@ -505,10 +569,19 @@
 		var croppicContainerEyecandyOptions = {
 				uploadUrl:'img_save_to_file.php',
 				cropUrl:'img_crop_to_file.php',
-				imgEyecandy:false,
+				imgEyecandy:false,				
 				loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> '
 		}
 		var cropContainerEyecandy = new Croppic('cropContainerEyecandy', croppicContainerEyecandyOptions);
+		
+		var croppicContainerPreloadOptions = {
+				uploadUrl:'img_save_to_file.php',
+				cropUrl:'img_crop_to_file.php',
+				loadPicture:'assets/img/night.jpg',
+				loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> '
+		}
+		var cropContainerPreload = new Croppic('cropContainerPreload', croppicContainerPreloadOptions);
+		
 		
 	</script>
   </body>

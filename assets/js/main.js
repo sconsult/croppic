@@ -30,7 +30,7 @@ $('#web_by').hover(function(){
 		$('#web_by label').css('display','none').stop(true, true)
 		$('#jobotic').animate({right:'1900px'},1800, function(){	 $('#jobotic').css('right','-100px').stop(true, true)	})
 });
-$('#web_by').click(function(){ window.location.href = 'http://www.studio42.hr';});
+$('#web_by').click(function(){ window.location.href = 'http://www.steinlinconsulting.com';});
 		
 	
 })

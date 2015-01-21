@@ -312,7 +312,9 @@ i {
 #cropContainerModal{ width:100%; height:200px; position: relative; border:1px solid #ccc;}
 #cropContaineroutput{ width:100%; height:145px; position: relative; border:1px solid #ccc;}
 #cropContainerEyecandy{ width:100%; height:200px; position: relative; border:1px solid #ccc;}
-
+#cropContainerPreload{ width:100%; height:200px; position: relative; border:1px solid #ccc;}
+#cropContainerPlaceHolder1{ width:100%; height:200px; position: relative; border:none;}
+#cropContainerPlaceHolder2{ width:100%; height:200px; position: relative; border:none;}
 
 
 #web_by {position:absolute; right:10px; font-size:10px; color:#aaa; padding:13px; cursor:pointer;  }

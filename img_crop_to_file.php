@@ -47,6 +47,17 @@ switch(strtolower($what['mime']))
         break;
     default: die('image type not supported');
 }
+
+
+//Check write Access to Directory
+
+if(!is_writable(dirname($output_filename))){
+	$response = Array(
+	    "status" => 'error',
+	    "message" => 'Can`t write cropped File'
+    );	
+}else{
+
     // resize the original image to size of editor
     $resizedImage = imagecreatetruecolor($imgW, $imgH);
 	imagecopyresampled($resizedImage, $source_image, 0, 0, 0, 0, $imgW, $imgH, $imgInitW, $imgInitH);
@@ -73,4 +84,5 @@ switch(strtolower($what['mime']))
 	    "status" => 'success',
 	    "url" => $output_filename.$type
     );
-	print json_encode($response);
+}
+print json_encode($response);

@@ -40,7 +40,8 @@
 			onImgZoom: null,
 			onImgRotate: null,
 			onBeforeImgCrop: null,
-			onAfterImgCrop: null
+			onAfterImgCrop: null,
+			onError: null,
 			
 		};
 
@@ -203,7 +204,7 @@
 					}
 					
 					if(response.status=='error'){
-						that.obj.append('<p style="width:100%; height:100%; text-align:center; line-height:'+that.objH+'px;">'+response.message+'</p>');
+						if (that.options.onError) that.options.onError.call(that,response.message);
 						that.hideLoader();
 						setTimeout( function(){ that.reset(); },2000)
 					}
@@ -540,8 +541,7 @@
 					response = typeof data =='object' ? data : jQuery.parseJSON(data);
 					
 					if(response.status=='success'){
-					
-					    if (that.options.imgEyecandy)
+						if (that.options.imgEyecandy)
 						    that.imgEyecandy.hide();
 						
 						that.destroy();
@@ -557,7 +557,9 @@
 
 					}
 					if(response.status=='error'){
-						that.obj.append('<p style="width:100%; height:100%;>'+response.message+'</p>">');
+						if (that.options.onError) that.options.onError.call(that,response.message);
+						that.hideLoader();
+						setTimeout( function(){ that.reset(); },2000)											
 					}
 					
 					if (that.options.onAfterImgCrop) that.options.onAfterImgCrop.call(that);

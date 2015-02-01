@@ -88,17 +88,21 @@
 					<span class="btn" id="cropContainerHeaderButton">click here to try it</span>
 				</div><!-- /col-lg-6 -->
 				
-			</div><!-- /row -->
+			</div><!-- /row -->			
 		</div><!-- /container -->
 	</div><!-- /headerwrap -->
 	
 	<div class="container">
+	    <div class="row mt centered">
+			<div class="col-lg-12">
+				<h2 style="border-bottom:1px solid #ccc; padding-bottom:20px;">croppic is supported on current browsers, such as chrome, firefox, IE, safari and opera</h2>
+			</div>
+		</div><!-- /row -->		
 		<div class="row mt centered">
 			<div class="col-lg-12">
 				<h1 id="examplesTarget" style="border-bottom:1px solid #ccc; padding-bottom:20px;">EXAMPLES</h1>
 			</div>
-		</div><!-- /row -->
-		
+		</div><!-- /row -->			
 		<div class="row mt ">
 			<div class="col-lg-4 ">
 				<h4 class="centered"> MODAL </h4>
@@ -121,8 +125,10 @@
 		</div>
 		<div class="row mt ">
 			<div class="col-lg-4 ">
-				<div id="cropContainerPlaceHolder1"></div>
-			</div>	
+				<h4 class="centered"> Minimal Controls </h4>
+				<p class="centered">( define the controls available )</p>
+				<div id="cropContainerMinimal"></div>
+			</div>		
 			<div class="col-lg-4 ">
 				<h4 class="centered"> Preload </h4>
 				<p class="centered">( if the picture is already available )</p>
@@ -150,12 +156,12 @@
 				<a class="scrollToLink" data-scroll="optionTarget-cropUrl">cropUrl</a>
 				<a class="scrollToLink" data-scroll="optionTarget-cropData">cropData</a>
 				<a class="scrollToLink" data-scroll="optionTarget-preloadImage">preloadImage</a>
+				<a class="scrollToLink" data-scroll="optionTarget-controls">defineControls</a>
 				<a class="scrollToLink" data-scroll="optionTarget-outputUrlId">outputUrlId</a>
 				<a class="scrollToLink" data-scroll="optionTarget-customUploadButtonId">customUploadButtonId</a>
 				<a class="scrollToLink" data-scroll="optionTarget-modal">modal</a>
 				<a class="scrollToLink" data-scroll="optionTarget-loaderHtml">loaderHtml</a>
 				<a class="scrollToLink" data-scroll="optionTarget-imgEyecandy">imgEyecandy options</a>
-				<a class="scrollToLink" data-scroll="optionTarget-doubleZoomControls">zoom options</a>
 				<a class="scrollToLink" data-scroll="optionTarget-callbacks">CALLBACKS</a>
 				<a class="scrollToLink" data-scroll="optionTarget-methods">METHODS</a>
 				
@@ -348,6 +354,31 @@
 		
 				</pre>
 				
+	<hr id="optionTarget-controls"/>
+			
+			<h2 class="centered">Controls</h2>	
+			
+			<p class="centered"> 
+				doubleZoomControls adds two extra zoom controls for 10*zoomFactor zoom (default is true)<br/>
+				zoomFactor zooms the image for the value in pixels (default is 10)<br/>
+				rotateControls adds two extra rotate controls for left and right rotation (default is true)<br/>
+				rotateFactor rotates the image for the value(default is 5)</p>
+			
+			<h3 class="centered">JS</h3>
+				<pre>		
+				
+		var cropperOptions = {
+			zoomFactor:10,
+			doubleZoomControls:true,
+			rotateFactor:10,
+			rotateControls:true			
+		}
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+		
+				</pre>
+				
 	<hr id="optionTarget-outputUrlId"/>
 			
 			<h2 class="centered">OUTPUT URL</h2>	
@@ -445,25 +476,6 @@
 		}
 				</pre>
 	
-	<hr id="optionTarget-doubleZoomControls"/>
-			
-			<h2 class="centered">ZOOMING</h2>	
-			
-			<p> doubleZoomControls adds two extra zoom controls for 10*zoomFactor zoom (default is true)</p>
-			<p> zoomFactor zooms the image for the value in pixels (default is 10)</p>
-			
-			<h3 class="centered">JS</h3>
-				<pre>		
-				
-		var cropperOptions = {
-			zoomFactor:10,
-			doubleZoomControls:true
-		}
-		
-		var cropperHeader = new Croppic('yourId', cropperOptions);
-					
-		
-				</pre>
 	
 	<hr id="optionTarget-callbacks"/>
 			
@@ -585,6 +597,16 @@
 				loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> '
 		}
 		var cropContainerEyecandy = new Croppic('cropContainerEyecandy', croppicContainerEyecandyOptions);
+		
+		var croppicContaineroutputMinimal = {
+				uploadUrl:'img_save_to_file.php',
+				cropUrl:'img_crop_to_file.php', 
+				modal:false,
+				doubleZoomControls:false,
+			    rotateControls: false,
+				loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> '
+		}
+		var cropContaineroutput = new Croppic('cropContainerMinimal', croppicContaineroutputMinimal);
 		
 		var croppicContainerPreloadOptions = {
 				uploadUrl:'img_save_to_file.php',

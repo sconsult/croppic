@@ -313,7 +313,7 @@ i {
 #cropContaineroutput{ width:100%; height:145px; position: relative; border:1px solid #ccc;}
 #cropContainerEyecandy{ width:100%; height:200px; position: relative; border:1px solid #ccc;}
 #cropContainerPreload{ width:100%; height:200px; position: relative; border:1px solid #ccc;}
-#cropContainerPlaceHolder1{ width:100%; height:200px; position: relative; border:none;}
+#cropContainerMinimal{ width:100%; height:200px; position: relative; border:1px solid #ccc;}
 #cropContainerPlaceHolder2{ width:100%; height:200px; position: relative; border:none;}
 
 

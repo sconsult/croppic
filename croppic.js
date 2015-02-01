@@ -26,12 +26,13 @@
 			zoomFactor:10,
 			rotateFactor:5,
 			doubleZoomControls:true,
+			rotateControls: true,
 			modal:false,
 			customUploadButtonId:'',
 			loaderHtml:'',
 			scaleToFill: true,
 			loadPicture:'',
-			onReset: null,
+			onReset: null,			
 			
 			//callbacks
 			onBeforeImgUpload: null,
@@ -132,7 +133,7 @@
 			var that = this;
 			
 			// CREATE UPLOAD IMG FORM
-			var formHtml = '<form class="'+that.id+'_imgUploadForm" style="display: none; visibility: hidden;">  <input type="file" name="img">  </form>';
+			var formHtml = '<form class="'+that.id+'_imgUploadForm" style="position: absolute; visibility: hidden; top:0;">  <input type="file" name="img">  </form>';
 			that.outputDiv.append(formHtml);
 			that.form = that.outputDiv.find('.'+that.id+'_imgUploadForm');
 			
@@ -312,20 +313,28 @@
 			var that = this;
 			
 			// CREATE CONTROLS
-			var cropControlZoomMuchIn =      '<i class="cropControlZoomMuchIn"></i>';
+			var cropControlZoomMuchIn =      '';
 			var cropControlZoomIn =          '<i class="cropControlZoomIn"></i>';
 			var cropControlZoomOut =         '<i class="cropControlZoomOut"></i>';
-			var cropControlZoomMuchOut =     '<i class="cropControlZoomMuchOut"></i>';
-			var cropControlRotateLeft =      '<i class="cropControlRotateLeft"></i>';
-	        var cropControlRotateRight =     '<i class="cropControlRotateRight"></i>';
+			var cropControlZoomMuchOut =     '';
+			var cropControlRotateLeft =      '';
+	        var cropControlRotateRight =     '';
 	        var cropControlCrop =            '<i class="cropControlCrop"></i>';
 			var cropControlReset =           '<i class="cropControlReset"></i>';
 			
             var html;
             
-			if(that.options.doubleZoomControls){ html =  '<div class="cropControls cropControlsCrop">'+ cropControlZoomMuchIn + cropControlZoomIn + cropControlZoomOut + cropControlZoomMuchOut + cropControlRotateLeft + cropControlRotateRight + cropControlCrop + cropControlReset + '</div>'; }
-			else{ html =  '<div class="cropControls cropControlsCrop">' + cropControlZoomIn + cropControlZoomOut + cropControlRotateLeft + cropControlRotateRight + cropControlCrop + cropControlReset + '</div>'; }	
+			if(that.options.doubleZoomControls){
+				cropControlZoomMuchIn = '<i class="cropControlZoomMuchIn"></i>';
+				cropControlZoomMuchOut = '<i class="cropControlZoomMuchOut"></i>';
+			}
+			if(that.options.rotateControls){
+				cropControlRotateLeft = '<i class="cropControlRotateLeft"></i>';
+				cropControlRotateRight = '<i class="cropControlRotateRight"></i>';
+			}
 			
+			html =  '<div class="cropControls cropControlsCrop">'+ cropControlZoomMuchIn + cropControlZoomIn + cropControlZoomOut + cropControlZoomMuchOut + cropControlRotateLeft + cropControlRotateRight + cropControlCrop + cropControlReset + '</div>';
+						
 			that.obj.append(html);
 			
 			that.cropControlsCrop = that.obj.find('.cropControlsCrop');

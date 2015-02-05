@@ -1,22 +1,18 @@
-Hi guys, sorry for the lousy support, Matt will be taking over from here, improving the plugin further and take better care of it than i did.
-Thank you for all the work and posts, some of those made my day :)
-
 see full documentation at http://www.croppic.net/
 
-works in IE 10+, chrome, and ffx (opera coming soon)
+works in IE 10+, chrome, firefox, safari and opera.
 
-Uses FormData so no IE9 and prev versions support. feel free to extend with ie9 support
+Currently in works:
 
-
-
-
+- Mobile Support
+- Backwards compatibility for older Browsers.
 
 MIT LICENCE
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
 "Software"), to deal in the Software without restriction, including
 without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
+distribute, sub-license, and/or sell copies of the Software, and to
 permit persons to whom the Software is furnished to do so, subject to
 the following conditions:
 

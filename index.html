@@ -547,6 +547,7 @@
 	<script src=" https://code.jquery.com/jquery-2.1.3.min.js"></script>
    
 	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/jquery.mousewheel.min.js"></script>
    	<script src="croppic.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
@@ -612,6 +613,7 @@
 				uploadUrl:'img_save_to_file.php',
 				cropUrl:'img_crop_to_file.php',
 				loadPicture:'assets/img/night.jpg',
+				enableMousescroll:true,
 				loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> '
 		}
 		var cropContainerPreload = new Croppic('cropContainerPreload', croppicContainerPreloadOptions);

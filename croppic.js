@@ -32,7 +32,8 @@
 			loaderHtml:'',
 			scaleToFill: true,
 			loadPicture:'',
-			onReset: null,			
+			onReset: null,
+			enableMousescroll: false, 			
 			
 			//callbacks
 			onBeforeImgUpload: null,
@@ -302,6 +303,13 @@
 			that.zoom(-that.imgInitW);
 			that.zoom(40);
 			
+			// Adding mousewheel zoom capabilities
+			if (that.options.enableMousescroll){
+				that.img.on('mousewheel', function(event) {
+					event.preventDefault();
+					that.zoom(that.options.zoomFactor*event.deltaY);				
+				});
+			}
 			// initial center image
 			
 			that.img.css({'left': -(that.imgW -that.objW)/2, 'top': -(that.imgH -that.objH)/2, 'position':'relative'});
@@ -370,20 +378,39 @@
 		initDrag:function(){
 			var that = this;
 			
-			that.img.on("mousedown", function(e) {
+			that.img.on("mousedown touchstart", function(e) {
 				
 				e.preventDefault(); // disable selection
-
+				
+				var pageX;
+                var pageY;
+                var userAgent = window.navigator.userAgent;
+                if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i)) {
+                    pageX = e.originalEvent.touches[0].pageX;
+                    pageY = e.originalEvent.touches[0].pageY;
+                } else {
+                    pageX = e.pageX;
+                    pageY = e.pageY;
+                }
+				
 				var z_idx = that.img.css('z-index'),
                 drg_h = that.img.outerHeight(),
                 drg_w = that.img.outerWidth(),
-                pos_y = that.img.offset().top + drg_h - e.pageY,
-                pos_x = that.img.offset().left + drg_w - e.pageX;
+                pos_y = that.img.offset().top + drg_h - pageY,
+                pos_x = that.img.offset().left + drg_w - pageX;
 				
-				that.img.css('z-index', 1000).on("mousemove", function(e) {
+				that.img.css('z-index', 1000).on("mousemove touchmove", function(e) {
 					
-					var imgTop = e.pageY + pos_y - drg_h;
-					var imgLeft = e.pageX + pos_x - drg_w;
+					var imgTop;
+					var imgLeft;
+					
+					if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i)) {
+                        imgTop = e.originalEvent.touches[0].pageY + pos_y - drg_h;
+                        imgLeft = e.originalEvent.touches[0].pageX + pos_x - drg_w;
+                    } else {
+                        imgTop = e.pageY + pos_y - drg_h;
+                        imgLeft = e.pageX + pos_x - drg_w;
+                    }
 					
 					that.img.offset({
 						top:imgTop,

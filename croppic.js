@@ -43,6 +43,8 @@
 			onImgRotate: null,
 			onBeforeImgCrop: null,
 			onAfterImgCrop: null,
+			onBeforeRemoveCroppedImg: null,
+			onAfterRemoveCroppedImg: null,
 			onError: null,
 			
 		};
@@ -146,8 +148,12 @@
 			if( !$.isEmptyObject(that.croppedImg)){
 			
 				that.cropControlRemoveCroppedImage.on('click',function(){ 
+					if (that.options.onBeforeRemoveCroppedImg) that.options.onBeforeRemoveCroppedImg.call(that);
+				
 					that.croppedImg.remove();
 					$(this).hide();
+					
+					if (that.options.onAfterRemoveCroppedImg) that.options.onAfterRemoveCroppedImg.call(that);
 					
 					if( !$.isEmptyObject(that.defaultImg)){ 
 						that.obj.append(that.defaultImg);

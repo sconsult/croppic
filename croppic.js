@@ -31,6 +31,7 @@
 			customUploadButtonId:'',
 			loaderHtml:'',
 			scaleToFill: true,
+			processInline: false,
 			loadPicture:'',
 			onReset: null,
 			enableMousescroll: false, 			
@@ -165,55 +166,84 @@
 				
 				that.showLoader();
 				that.imgUploadControl.hide();
-			
-				var formData = new FormData(that.form[0]);
-			
-				for (var key in that.options.uploadData) {
-					if( that.options.uploadData.hasOwnProperty(key) ) {
-						formData.append( key , that.options.uploadData[key] );	
-					}
-				}
 				
-				$.ajax({
-                    url: that.options.uploadUrl,
-                    data: formData,
-                    context: document.body,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    type: 'POST'
-				}).always(function(data){
-					response = typeof data =='object' ? data : jQuery.parseJSON(data);
-					if(response.status=='success'){
-						
-						that.imgInitW = that.imgW = response.width;
-						that.imgInitH = that.imgH = response.height;
-						
-						if(that.options.modal){	that.createModal(); }
-						if( !$.isEmptyObject(that.croppedImg)){ that.croppedImg.remove(); }
-						
-						that.imgUrl=response.url;
-						
-						var img = $('<img src="'+response.url+'">')
+				if(that.options.processInline){
+					//Reading Inline
+										
+					var reader = new FileReader();
+					reader.onload = function (e) {
+						var image = new Image();
+						image.src = e.target.result;
+						image.onload = function(){
+							that.imgInitW = that.imgW = image.width;
+							that.imgInitH = that.imgH = image.height;
 
-						that.obj.append(img);
-
-						img.load(function(){
+							if(that.options.modal){	that.createModal(); }
+							if( !$.isEmptyObject(that.croppedImg)){ that.croppedImg.remove(); }
+							
+							that.imgUrl=image.src;
+							
+							that.obj.append('<img src="'+image.src+'">');
+							
 							that.initCropper();
 							that.hideLoader();
+							
 							if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
-						});
-					}
-					
-					if(response.status=='error'){
-						if (that.options.onError) that.options.onError.call(that,response.message);
-						that.hideLoader();
-						setTimeout( function(){ that.reset(); },2000)
-					}
-					
+																				
+						}
+					};
+					reader.readAsDataURL(that.form.find('input[type="file"]')[0].files[0]);
 
-				});
+				} else {
+								
+					var formData = new FormData(that.form[0]);
 				
+					for (var key in that.options.uploadData) {
+						if( that.options.uploadData.hasOwnProperty(key) ) {
+							formData.append( key , that.options.uploadData[key] );	
+						}
+					}
+					
+					$.ajax({
+						url: that.options.uploadUrl,
+						data: formData,
+						context: document.body,
+						cache: false,
+						contentType: false,
+						processData: false,
+						type: 'POST'
+					}).always(function(data){
+						response = typeof data =='object' ? data : jQuery.parseJSON(data);
+						if(response.status=='success'){
+							
+							that.imgInitW = that.imgW = response.width;
+							that.imgInitH = that.imgH = response.height;
+							
+							if(that.options.modal){	that.createModal(); }
+							if( !$.isEmptyObject(that.croppedImg)){ that.croppedImg.remove(); }
+							
+							that.imgUrl=response.url;
+							
+							var img = $('<img src="'+response.url+'">')
+
+							that.obj.append(img);
+
+							img.load(function(){
+								that.initCropper();
+								that.hideLoader();
+								if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
+							});
+						}
+						
+						if(response.status=='error'){
+							if (that.options.onError) that.options.onError.call(that,response.message);
+							that.hideLoader();
+							setTimeout( function(){ that.reset(); },2000)
+						}
+						
+
+					});
+				}
 			});
 		
 		},

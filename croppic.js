@@ -444,7 +444,7 @@
 				var pageX;
                 var pageY;
                 var userAgent = window.navigator.userAgent;
-                if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i)) {
+                if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i) || (e.pageY && e.pageX) == undefined) {
                     pageX = e.originalEvent.touches[0].pageX;
                     pageY = e.originalEvent.touches[0].pageY;
                 } else {
@@ -463,7 +463,7 @@
 					var imgTop;
 					var imgLeft;
 					
-					if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i)) {
+					if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i) (e.pageY && e.pageX) == undefined) {
                         imgTop = e.originalEvent.touches[0].pageY + pos_y - drg_h;
                         imgLeft = e.originalEvent.touches[0].pageX + pos_x - drg_w;
                     } else {

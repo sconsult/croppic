@@ -165,6 +165,7 @@
 					}
 					
 					that.croppedImg.remove();
+					that.croppedImg = {};
 					$(this).hide();
 					
 					if (typeof (that.options.onAfterRemoveCroppedImg) === typeof(Function)) {

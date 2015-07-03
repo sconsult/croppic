@@ -464,7 +464,7 @@
 					var imgTop;
 					var imgLeft;
 					
-					if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i) (e.pageY && e.pageX) == undefined) {
+					if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i) || (e.pageY && e.pageX) == undefined) {
                         imgTop = e.originalEvent.touches[0].pageY + pos_y - drg_h;
                         imgLeft = e.originalEvent.touches[0].pageX + pos_x - drg_w;
                     } else {

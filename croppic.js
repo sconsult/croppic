@@ -1,5 +1,5 @@
 /*
- * CROP
+ * CROPPIC
  * dependancy: jQuery
  * author: Ognjen "Zmaj Džedaj" Božičković and Mat Steinlin
  */
@@ -139,7 +139,7 @@
 			var that = this;
 			
 			// CREATE UPLOAD IMG FORM
-            var formHtml = '<form class="' + that.id + '_imgUploadForm" style="display: none; visibility: hidden;">  <input type="file" name="img" id="' + that.id + '_imgUploadField">  </form>';
+            var formHtml = '<form class="' + that.id + '_imgUploadForm" style="visibility: hidden;">  <input type="file" name="img" id="' + that.id + '_imgUploadField">  </form>';
 			that.outputDiv.append(formHtml);
 			that.form = that.outputDiv.find('.'+that.id+'_imgUploadForm');
 			
@@ -190,31 +190,35 @@
 				that.imgUploadControl.hide();
 				
 				if(that.options.processInline){			
-				
-					var reader = new FileReader();
-					reader.onload = function (e) {
-						var image = new Image();
-						image.src = e.target.result;
-						image.onload = function(){
-							that.imgInitW = that.imgW = image.width;
-							that.imgInitH = that.imgH = image.height;
+					// Checking Browser Support for FileReader API
+				    if (typeof FileReader == "undefined"){
+						if (that.options.onError) that.options.onError.call(that,"processInline is not supported by your Browser");
+						that.reset();
+					}else{					
+						var reader = new FileReader();					
+						reader.onload = function (e) {
+							var image = new Image();
+							image.src = e.target.result;
+							image.onload = function(){
+								that.imgInitW = that.imgW = image.width;
+								that.imgInitH = that.imgH = image.height;
 
-							if(that.options.modal){	that.createModal(); }
-							if( !$.isEmptyObject(that.croppedImg)){ that.croppedImg.remove(); }
-							
-							that.imgUrl=image.src;
-							
-							that.obj.append('<img src="'+image.src+'">');
-							
-							that.initCropper();
-							that.hideLoader();
-							
-							if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
-																				
-						}
-					};
-					reader.readAsDataURL(that.form.find('input[type="file"]')[0].files[0]);
-
+								if(that.options.modal){	that.createModal(); }
+								if( !$.isEmptyObject(that.croppedImg)){ that.croppedImg.remove(); }
+								
+								that.imgUrl=image.src;
+								
+								that.obj.append('<img src="'+image.src+'">');
+								
+								that.initCropper();
+								that.hideLoader();
+								
+								if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
+																					
+							}
+						};
+						reader.readAsDataURL(that.form.find('input[type="file"]')[0].files[0]);
+					}
 				} else {		
 									    					
 					formData = new FormData(that.form[0]);

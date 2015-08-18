@@ -161,6 +161,7 @@
 				<a class="scrollToLink" data-scroll="optionTarget-customUploadButtonId">customUploadButtonId</a>
 				<a class="scrollToLink" data-scroll="optionTarget-modal">modal</a>
 				<a class="scrollToLink" data-scroll="optionTarget-loaderHtml">loaderHtml</a>
+				<a class="scrollToLink" data-scroll="optionTarget-processInline">processInline</a>
 				<a class="scrollToLink" data-scroll="optionTarget-imgEyecandy">imgEyecandy options</a>
 				<a class="scrollToLink" data-scroll="optionTarget-callbacks">CALLBACKS</a>
 				<a class="scrollToLink" data-scroll="optionTarget-methods">METHODS</a>
@@ -452,6 +453,26 @@
 					
 		
 				</pre>
+				
+	<hr id="optionTarget-processInline"/>
+			
+			<h2 class="centered">Process Inline</h2>	
+			<p class="centered">
+				If you want to handle the Initial Fileupload in Javascript(Filereader) rather then on Server side (default is false) <br />
+				<b>NOT ALL BROWSERS SUPPORT THE FILEREADER API: EXAMPLE IE10+ IS SUPPORTED</b>
+			</p>
+			
+			<h3 class="centered">JS</h3>
+				<pre>		7
+				
+		var cropperOptions = {
+			processInline:true,'
+		}
+		
+		var cropperHeader = new Croppic('yourId', cropperOptions);
+					
+						
+				</pre>
 	
 	<hr id="optionTarget-imgEyecandy"/>
 			
@@ -493,6 +514,7 @@
 		onImgZoom:		function(){ console.log('onImgZoom') },
 		onBeforeImgCrop: 	function(){ console.log('onBeforeImgCrop') },
 		onAfterImgCrop:		function(){ console.log('onAfterImgCrop') },
+		onReset:		function(){ console.log('onReset') },
 		onError:		function(errormsg){ console.log('onError:'+errormsg) }
 	}
 			</pre>
@@ -568,6 +590,7 @@
 				onImgZoom: function(){ console.log('onImgZoom') },
 				onBeforeImgCrop: function(){ console.log('onBeforeImgCrop') },
 				onAfterImgCrop:function(){ console.log('onAfterImgCrop') },
+				onReset:function(){ console.log('onReset') },
 				onError:function(errormessage){ console.log('onError:'+errormessage) }
 		}	
 		var croppic = new Croppic('croppic', croppicHeaderOptions);

@@ -704,7 +704,7 @@
 				setTimeout( function(){ that.reset(); },2000)	
             }
 
-            if (that.options.onAfterImgCrop) that.options.onAfterImgCrop.call(that);
+            if (that.options.onAfterImgCrop) that.options.onAfterImgCrop.call(that, response);
         },
 		showLoader:function(){
 			var that = this;

@@ -443,7 +443,7 @@
 			</p>
 			
 			<h3 class="centered">JS</h3>
-				<pre>		7
+				<pre>		
 				
 		var cropperOptions = {
 			loaderHtml:'&lt;img class="loader" src="loader.png" &gt;'
@@ -466,7 +466,7 @@
 				<pre>		7
 				
 		var cropperOptions = {
-			processInline:true,'
+			processInline:true,
 		}
 		
 		var cropperHeader = new Croppic('yourId', cropperOptions);
@@ -489,12 +489,8 @@
 			imgEyecandyOpacity:0.2
 		}
 		
-		var cropperHeader = new Croppic('yourId', cropperOptions);
-					
-		var cropperOptions = {
-			imgEyecandy:true,
-			imgEyecandyOpacity:0.2
-		}
+		var cropperHeader = new Croppic('yourId', cropperOptions);					
+		
 				</pre>
 	
 	
@@ -507,16 +503,18 @@
 			
 			<h3 class="centered">JS</h3>
 			<pre>		
-	var cropperHeaderOptions = {
-		onBeforeImgUpload: 	function(){ console.log('onBeforeImgUpload') },
-		onAfterImgUpload: 	function(){ console.log('onAfterImgUpload') },
-		onImgDrag:		function(){ console.log('onImgDrag') },
-		onImgZoom:		function(){ console.log('onImgZoom') },
-		onBeforeImgCrop: 	function(){ console.log('onBeforeImgCrop') },
-		onAfterImgCrop:		function(){ console.log('onAfterImgCrop') },
-		onReset:		function(){ console.log('onReset') },
-		onError:		function(errormsg){ console.log('onError:'+errormsg) }
-	}
+		var cropperOptions = {
+			onBeforeImgUpload: 	function(){ console.log('onBeforeImgUpload') },
+			onAfterImgUpload: 	function(){ console.log('onAfterImgUpload') },
+			onImgDrag:		function(){ console.log('onImgDrag') },
+			onImgZoom:		function(){ console.log('onImgZoom') },
+			onBeforeImgCrop: 	function(){ console.log('onBeforeImgCrop') },
+			onAfterImgCrop:		function(){ console.log('onAfterImgCrop') },
+			onReset:		function(){ console.log('onReset') },
+			onError:		function(errormsg){ console.log('onError:'+errormsg) }
+		}
+	
+		var cropperHeader = new Croppic('yourId', cropperOptions);	
 			</pre>
 		
 	<hr id="optionTarget-methods"/>

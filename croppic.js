@@ -23,6 +23,7 @@
 			//styles
 			imgEyecandy:true,
 			imgEyecandyOpacity:0.2,
+			initialZoom:40,
 			zoomFactor:10,
 			rotateFactor:5,
 			doubleZoomControls:true,
@@ -365,7 +366,7 @@
 		initialScaleImg:function(){
 			var that = this;
 			that.zoom(-that.imgInitW);
-			that.zoom(40);
+			that.zoom(that.options.initialZoom);
 			
 			// Adding mousewheel zoom capabilities
 			if (that.options.enableMousescroll){

@@ -221,8 +221,16 @@
 					}
 				} else {		
 									    					
-					formData = new FormData(that.form[0]);
-				
+					try {
+						// other modern browsers
+						formData = new FormData(that.form[0]);
+					} catch(e) {
+						// IE10 MUST have all form items appended as individual form key / value pairs
+						formData = new FormData();
+						formData.append('img', that.form.find("input[type=file]")[0].files[0]);
+										
+					}
+					
 					for (var key in that.options.uploadData) {
 						if( that.options.uploadData.hasOwnProperty(key) ) {
 							formData.append( key , that.options.uploadData[key] );	
@@ -312,6 +320,7 @@
             }
 
             if (response.status == 'error') {
+			    alert(response.message);
                 if (that.options.onError) that.options.onError.call(that,response.message);
 				that.hideLoader();
 				setTimeout( function(){ that.reset(); },2000)	

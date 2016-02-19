@@ -23,7 +23,7 @@ Please don't contact me by email for support. The right place to get support is 
 [Croppic Issues](https://github.com/sconsult/croppic/issues) 
 
 
-MIT LICENCE
+MIT LICENSE
 -----------
 
 Permission is hereby granted, free of charge, to any person obtaining
